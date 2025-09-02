@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Referee Assignment System{% endblock %}
+
+{% block content %}
+<h2 class="section-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stats-card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-2x mb-3"></i>
+                <h3>{{ stats.referees }}</h3>
+                <p class="mb-0">Total Referees</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-trophy fa-2x mb-3"></i>
+                <h3>{{ stats.leagues }}</h3>
+                <p class="mb-0">Active Leagues</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-futbol fa-2x mb-3"></i>
+                <h3>{{ stats.matches }}</h3>
+                <p class="mb-0">Scheduled Matches</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-calendar-check fa-2x mb-3"></i>
+                <h3>{{ stats.assignments }}</h3>
+                <p class="mb-0">Assignments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-calendar"></i> Upcoming Matches
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if upcoming_matches %}
+                    {% for match_data in upcoming_matches %}
+                        <div class="alert alert-info mb-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ match_data.team1.name }} vs {{ match_data.team2.name }}</strong><br>
+                                    <small>{{ match_data.league.name }} - {{ match_data.match.date }}</small>
+                                </div>
+                                <div>
+                                    {% if match_data.assignments|length == 0 %}
+                                        <span class="badge bg-warning">No referees assigned</span>
+                                    {% else %}
+                                        <span class="badge bg-success">{{ match_data.assignments|length }}/3 referees</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No upcoming matches scheduled.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle"></i> Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('referees') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Referee
+                    </a>
+                    <a href="{{ url_for('leagues') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-plus"></i> Create League
+                    </a>
+                    <a href="{{ url_for('matches') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-plus"></i> Schedule Match
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
