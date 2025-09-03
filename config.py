@@ -1,6 +1,8 @@
 import os
 from datetime import timedelta
 
+from Models.entities import RefereeAssignment
+
 
 class Config:
     """Base configuration class"""
@@ -56,7 +58,7 @@ class Validators:
     """Collection of validation utilities"""
 
     @staticmethod
-    def validate_email(email: str) -> str:
+    def validate_email(email: str, match_id=None, self=None) -> str:
         """Validate email format and return cleaned email"""
         if not email or not email.strip():
             raise ValidationError("Email is required")
